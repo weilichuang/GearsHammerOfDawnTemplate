@@ -34,3 +34,5 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+/GearsHammerUnityProject/Logs
+/GearsHammerUnityProject/.idea

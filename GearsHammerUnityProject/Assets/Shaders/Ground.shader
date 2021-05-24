@@ -63,14 +63,15 @@
             float noise = tex2Dlod(_Noise, v.texcoord * 2.0f).r;
             float2 uvDir = v.texcoord.xy - 0.5f;
 
+            float isOnPlane = step(0.001,_Sequence);
+
             float scaledSequence = _Sequence * 1.52f - 0.02f;
 
             float seqVal = pow(1.0f - (noise + 1.0f) * length(uvDir), _Exp) * scaledSequence;
-
-            Rotate(v.vertex, v.normal, float3(2.0f * uvDir, 0), cross(float3(uvDir, 0), float3(noise * 0.1f, 0, 1)), seqVal * _Rot);
-
-            v.vertex.z += sin(seqVal * 2.0f) * (noise + 1.0f) * _Height;
-            v.vertex.xy -= normalize(float2(v.texcoord.x, 1.0f - v.texcoord.y) - 0.5f) * seqVal * noise * 2.0f;
+            
+            Rotate(v.vertex, v.normal, float3(2.0f * uvDir, 0), cross(float3(uvDir, 0), float3(noise * 0.1f, 0, 1)), seqVal * _Rot * isOnPlane);
+            v.vertex.z += sin(seqVal * 2.0f) * (noise + 1.0f) * _Height * isOnPlane;
+            v.vertex.xy -= normalize(float2(v.texcoord.x, 1.0f - v.texcoord.y) - 0.5f) * seqVal * noise * isOnPlane * 2.0f;
             
             i.color = float3(1,1,1);
         }
